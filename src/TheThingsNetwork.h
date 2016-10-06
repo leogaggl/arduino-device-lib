@@ -31,6 +31,18 @@ typedef struct  airtime_s
 
 class TheThingsNetwork
 {
+  public:
+    TheThingsNetwork(Stream& modemStream, Stream& debugStream, ttn_fp_t fp, int sf = TTN_DEFAULT_SF, int fsb = TTN_DEFAULT_FSB); 
+    void showStatus();
+    void onMessage(void (*cb)(const byte* payload, int length, int port));
+    bool provision(const byte appEui[8], const byte appKey[16]);
+    bool join(const byte appEui[8], const byte appKey[16], int retries = -1, long int retryDelay = 10000);
+    bool join(int retries = -1, long int retryDelay = 10000);
+    bool personalize(const byte devAddr[4], const byte nwkSKey[16], const byte appSKey[16]);
+    bool personalize();
+    int sendBytes(const byte* payload, int length, int port = 1, bool confirm = false);
+    int poll(int port = 1, bool confirm = false);
+
   private:
     Stream* modemStream;
     Stream* debugStream;
@@ -53,18 +65,6 @@ class TheThingsNetwork
     void configureEU868(int sf);
     void configureUS915(int sf, int fsb);
     void configureChannels(int sf, int fsb);
-
-  public:
-    TheThingsNetwork(Stream& modemStream, Stream& debugStream, ttn_fp_t fp, int sf = TTN_DEFAULT_SF, int fsb = TTN_DEFAULT_FSB);
-    void showStatus();
-    void onMessage(void (*cb)(const byte* payload, int length, int port));
-    bool provision(const byte appEui[8], const byte appKey[16]);
-    bool join(const byte appEui[8], const byte appKey[16], int retries = -1, long int retryDelay = 10000);
-    bool join(int retries = -1, long int retryDelay = 10000);
-    bool personalize(const byte devAddr[4], const byte nwkSKey[16], const byte appSKey[16]);
-    bool personalize();
-    int sendBytes(const byte* payload, int length, int port = 1, bool confirm = false);
-    int poll(int port = 1, bool confirm = false);
 };
 
 #endif
