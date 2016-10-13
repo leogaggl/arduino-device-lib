@@ -1,6 +1,6 @@
-PROTOC = $(NANOPB)/generator-bin/protoc --nanopb_out="-v:." -I$(HOME)/Arduino/libraries/TheThingsNetwork $(HOME)/Arduino/libraries/TheThingsNetwork/src
+PROTOC = $(NANOPB)/generator-bin/protoc --proto_path=src/api --nanopb_out="-v:src"
 
 .PHONY: proto
 
 proto:
-	$(PROTOC)/api/protocol/*.proto
+	$(PROTOC) src/api/*.proto
