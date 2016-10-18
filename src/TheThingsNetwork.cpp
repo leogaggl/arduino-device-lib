@@ -367,7 +367,7 @@ void TheThingsNetwork::configureChannels(int sf, int fsb) {
     case TTN_FP_US915:
       configureUS915(sf, fsb);
       break;
-    default:
+  default:
       debugPrintLn("Invalid frequency plan");
       break;
   }

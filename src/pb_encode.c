@@ -45,7 +45,7 @@ static const pb_encoder_t PB_ENCODERS[PB_LTYPES_COUNT] = {
     &pb_enc_svarint,
     &pb_enc_fixed32,
     &pb_enc_fixed64,
-    
+
     &pb_enc_bytes,
     &pb_enc_string,
     &pb_enc_submessage,
