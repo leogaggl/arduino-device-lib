@@ -5,16 +5,16 @@
 
 void TheThingsMessage::ChoseMessage(api_Measurement *measurement, ttn_message_t message) {
   switch (message) {
-    case Water:
+    case water:
       measurement->has_water = 1;
       break;
-    case Motion:
+    case motion:
       measurement->has_motion = 1;
       break;
-    case Humidity:
+    case humidity:
       measurement->has_humidity = 1;
       break;
-    case Temperature:
+    case temperature:
       measurement->has_temperature = 1;
       break;
     case all:

@@ -22,10 +22,10 @@
 #define TTN_HEX_PAIR_TO_BYTE(h, l) ((TTN_HEX_CHAR_TO_NIBBLE(h) << 4) + TTN_HEX_CHAR_TO_NIBBLE(l))
 
 enum ttn_message_t {
-  Water,
-  Motion,
-  Temperature,
-  Humidity,
+  water,
+  motion,
+  temperature,
+  humidity,
   all
 };
 

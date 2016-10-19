@@ -31,7 +31,7 @@ void setup()
   ttn.join(appEui, appKey);
 
   //Chose message you want to send
-  msg.ChoseMessage(&measurement, all /* Water, Humidity, Temperature, Motion*/);
+  msg.ChoseMessage(&measurement, all /* water, humidity, temperature, motion*/);
 }
 
 void loop()
