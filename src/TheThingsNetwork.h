@@ -6,10 +6,6 @@
 
 #include <Arduino.h>
 #include <Stream.h>
-#include <pb.h>
-#include <pb_encode.h>
-#include <pb_decode.h>
-#include "measurement.pb.h"
 
 #define TTN_DEFAULT_SF 7
 #define TTN_DEFAULT_FSB 2
@@ -20,14 +16,6 @@
 
 #define TTN_HEX_CHAR_TO_NIBBLE(c) ((c >= 'A') ? (c - 'A' + 0x0A) : (c - '0'))
 #define TTN_HEX_PAIR_TO_BYTE(h, l) ((TTN_HEX_CHAR_TO_NIBBLE(h) << 4) + TTN_HEX_CHAR_TO_NIBBLE(l))
-
-enum ttn_message_t {
-  water,
-  motion,
-  temperature,
-  humidity,
-  all
-};
 
 enum ttn_fp_t {
   TTN_FP_EU868,
@@ -66,25 +54,6 @@ class TheThingsNetwork
     bool personalize();
     int sendBytes(const byte* payload, int length, int port = 1, bool confirm = false);
     int poll(int port = 1, bool confirm = false);
-};
-
-class TheThingsMessage
-{
-  private:
-    ttn_message_t message;
-    Stream* printStream;
-    pb_ostream_t sendStream;
-    byte buffer[51];
-    void (* messageCallback)(const byte* payload, int length, int port, bool confirm);
-
-  public:
-    TheThingsMessage(Stream& printStream);
-    void ChoseMessage(api_Measurement *measurement, ttn_message_t message);
-    void ProcessMessage(const byte *buffer, int size, int port);
-    void encodeMessage(api_Measurement measurement);
-    void onMessage(void (*cb)(const byte* payload, int length, int port, bool confirm));
-    int sendMessage(int port = 1, bool confirm = false);
-    void showValues(api_Measurement measurement);
 };
 
 #endif

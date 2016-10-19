@@ -97,13 +97,13 @@ int sendBytes(const byte* payload, int length, int port = 1, bool confirm = fals
 - `int port = 1`: The port to address. Defaults to `1`.
 - `bool confirm = false`: Whether to ask for confirmation. Defaults to `false`.
 
-Returns a success or error code and logs the related error message: 
+Returns a success or error code and logs the related error message:
 
 * `-1`: Send command failed.
 * `-2`: Time-out.
 * `1`: Successful transmission.
 * `2`: Successful transmission. Received \<N> bytes
-* `-10`: Unexpected response: \<Response> 
+* `-10`: Unexpected response: \<Response>
 
 See the [Send](https://github.com/TheThingsNetwork/arduino-device-lib/blob/master/examples/Send/Send.ino) example.
 
@@ -130,37 +130,31 @@ bool provision(const byte appEui[8], const appKey[16]);
 ## Class: TheThingsMessage
 
 ```c
-#include <TheThingsNetwork.h>
+#include <TheThingsMessage.h>
 
-TheThingsMessage msg(Stream& modemStream);
+TheThingsMessage msg(Stream& modemStream, Stream& debugStream, TheThingsNetwork& ttn);
 ```
 
+- `Stream& modemStream`: Stream for the LoRa modem (for The Things Node/Uno use `Serial1` and data rate `57600`).
 - `Stream& debugStream`: Stream to write debug logs to (for The Things Node/Uno use `Serial` and data rate `9600`).
+- `TheThingsNetwork ttn`: Calls class to use all `TheThingsNetwork`'s fonctions(private and public).
 
-## Method: encodeMessage
-Encode the message we want to send.
-
-```c
-void encodeMessage(api_Measurement measurement);
-```
-
-- `api_Measurement measurement`: Structure with all the variable we can send.
 
 ## Method: sendMessage
 Calls `sendBytes()` with the payload and the length of the payload to send a message.
 
 ```c
-int sendMessage(int port = 1, bool confirm = false);
+int sendMessage(uint8_t port = 100, bool confirm = false);
 ```
 
-- `int port = 1`: The port to address. Defaults to `1`.
+- `uint8_t port = 100`: The port to address. Defaults to `100`.
 - `bool confirm = false`: Whether to ask for confirmation. Defaults to `false`.
 
 ## Method: ChoseMessage
 Calls the correct build-in message to send.
 
 ```c
-void ChoseMessage(api_Measurement *measurement, ttn_message_t message);
+void choseMessage(api_Measurement *measurement, ttn_message_t message);
 ```
 
 - `api_Measurement measurement`: Structure with all the variable we can send.
@@ -170,9 +164,9 @@ void ChoseMessage(api_Measurement *measurement, ttn_message_t message);
 Decode the Message received.
 
 ```c
-void ProcessMessage(const byte *buffer, int size, int port);
+void ProcessMessage(const byte *buffer, size_t size, int port = 1);
 ```
 
 - `const byte *buffer`: Bytes received.
-- `int size`: The number of bytes.
+- `size_t size`: The number of bytes.
 - `int port = 1`: The port to address. Defaults to `1`.
