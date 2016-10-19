@@ -150,16 +150,6 @@ int sendMessage(uint8_t port = 100, bool confirm = false);
 - `uint8_t port = 100`: The port to address. Defaults to `100`.
 - `bool confirm = false`: Whether to ask for confirmation. Defaults to `false`.
 
-## Method: ChoseMessage
-Calls the correct build-in message to send.
-
-```c
-void choseMessage(api_Measurement *measurement, ttn_message_t message);
-```
-
-- `api_Measurement measurement`: Structure with all the variable we can send.
-- `ttn_message_t message`: The variable you want to send(e.g. `Water`, `Temperature`, `Motion` and `all` for all the variables).
-
 ## Method: ProcessMessage
 Decode the Message received.
 

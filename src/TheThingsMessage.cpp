@@ -3,35 +3,6 @@
 #define debugPrintLn(...) { if (debugStream) debugStream->println(__VA_ARGS__); }
 #define debugPrint(...) { if (debugStream) debugStream->print(__VA_ARGS__); }
 
-void TheThingsMessage::choseMessage(api_Measurement *measurement, ttn_message_t message) {
-  switch (message) {
-    case water:
-      measurement->has_water = 1;
-      break;
-    case motion:
-      measurement->has_motion = 1;
-      break;
-    case humidity:
-      measurement->has_humidity = 1;
-      break;
-    case temperature_celcius:
-      measurement->has_temperature_celcius = 1;
-      break;
-    case temperature_fahrenheit:
-      measurement->has_temperature_fahrenheit = 1;
-      break;
-    case all:
-      measurement->has_water = 1;
-      measurement->has_motion = 1;
-      measurement->has_humidity = 1;
-      measurement->has_temperature_fahrenheit = 1;
-      measurement->has_temperature_celcius = 1;
-      break;
-    default:
-      return;
-  }
-}
-
 void TheThingsMessage::processMessage(const byte *buffer, int size, int port) {
   api_Measurement message;
   pb_istream_t stream = pb_istream_from_buffer(buffer, size);
