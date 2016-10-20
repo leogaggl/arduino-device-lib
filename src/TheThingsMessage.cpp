@@ -4,7 +4,7 @@
 #define debugPrint(...) { if (debugStream) debugStream->print(__VA_ARGS__); }
 
 void TheThingsMessage::processMessage(const byte *buffer, int size, int port) {
-  api_Measurement message;
+  sensorData message;
   pb_istream_t stream = pb_istream_from_buffer(buffer, size);
   if (!pb_decode(&stream, api_Measurement_fields, &message)) {
     return false;
@@ -36,7 +36,7 @@ void TheThingsMessage::processMessage(const byte *buffer, int size, int port) {
   }
 }
 
-void TheThingsMessage::showValues(api_Measurement measurement) {
+void TheThingsMessage::showValues(sensorData measurement) {
 if (measurement.has_water) {
     uint32_t Water = measurement.water;
     debugPrint(F("water = "));
@@ -70,19 +70,15 @@ if (measurement.has_water) {
   debugPrintLn();
 }
 
-void TheThingsMessage::onMessage(void (*cb)(const byte* payload, int length, int port)) {
-  this->messageCallback = cb;
+void TheThingsMessage::encodeSensorData(sensorData *data, byte **buffer, size_t *size) {
+  byte message[51];
+  pb_ostream_t sendStream = pb_ostream_from_buffer(message, sizeof(message));
+  pb_encode(&sendStream, api_Measurement_fields, data);
+  *(buffer) = message;
+  *size = sendStream.bytes_written;
 }
 
-int TheThingsMessage::sendMessage(api_Measurement measurement, int port, bool confirm) {
-  byte buffer[51];
-  pb_ostream_t sendStream = pb_ostream_from_buffer(buffer, sizeof(buffer));
-  pb_encode(&sendStream, api_Measurement_fields, &measurement);
-  return this->ttn->sendBytes(buffer, sendStream.bytes_written, port, confirm);
-}
-
-TheThingsMessage::TheThingsMessage(Stream& modemStream, Stream& debugStream, TheThingsNetwork& ttn) {
+TheThingsMessage::TheThingsMessage(Stream& modemStream, Stream& debugStream) {
   this->debugStream = &debugStream;
   this->modemStream = &modemStream;
-  this->ttn = &ttn;
 }

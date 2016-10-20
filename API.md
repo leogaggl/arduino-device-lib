@@ -132,31 +132,30 @@ bool provision(const byte appEui[8], const appKey[16]);
 ```c
 #include <TheThingsMessage.h>
 
-TheThingsMessage msg(Stream& modemStream, Stream& debugStream, TheThingsNetwork& ttn);
+TheThingsMessage msg(Stream& modemStream, Stream& debugStream);
 ```
 
 - `Stream& modemStream`: Stream for the LoRa modem (for The Things Node/Uno use `Serial1` and data rate `57600`).
 - `Stream& debugStream`: Stream to write debug logs to (for The Things Node/Uno use `Serial` and data rate `9600`).
-- `TheThingsNetwork ttn`: Calls class to use all `TheThingsNetwork`'s fonctions(private and public).
-
-
-## Method: sendMessage
-Calls `sendBytes()` with the payload and the length of the payload to send a message.
-
-```c
-int sendMessage(uint8_t port = 100, bool confirm = false);
-```
-
-- `uint8_t port = 100`: The port to address. Defaults to `100`.
-- `bool confirm = false`: Whether to ask for confirmation. Defaults to `false`.
 
 ## Method: ProcessMessage
-Decode the Message received.
+Decode the message received.
 
 ```c
-void ProcessMessage(const byte *buffer, size_t size, int port = 1);
+void ProcessMessage(const byte *buffer, size_t size, int port);
 ```
 
 - `const byte *buffer`: Bytes received.
 - `size_t size`: The number of bytes.
-- `int port = 1`: The port to address. Defaults to `1`.
+- `int port`: The port to address.
+
+## Method: encodeSensorData
+Encode the message to send.
+
+```c
+void encodeSensorData(sensorData *data, const byte *buffer, size_t size);
+```
+
+- `sensorData *data`: Structure containing all the message we can send.
+- `const byte *buffer`: Bytes received.
+- `size_t size`: The number of bytes.

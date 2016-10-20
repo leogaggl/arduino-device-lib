@@ -1,5 +1,7 @@
 #include <TheThingsNetwork.h>
+#include <TheThingsMessage.h>
 
+// Set your AppEUI and AppKey
 const byte appEui[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 const byte appKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 , 0x00 };
@@ -8,9 +10,9 @@ const byte appKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 #define debugSerial Serial
 
 TheThingsNetwork ttn(loraSerial, debugSerial, TTN_FP_EU868);
-TheThingsMessage msg(debugSerial);
+TheThingsMessage msg(loraSerial, debugSerial);
 
-api_Measurement measurement = api_Measurement_init_default;
+sensorData data = api_Measurement_init_default;
 
 void setup()
 {
@@ -23,7 +25,7 @@ void setup()
   while (!debugSerial && millis() < 10000);
 
   //Set callback for incoming message
-  msg.onMessage(message);
+  ttn.onMessage(message);
 
   debugSerial.println("-- STATUS");
   ttn.showStatus();
@@ -31,41 +33,49 @@ void setup()
   debugSerial.println("-- JOIN");
   ttn.join(appEui, appKey);
 
-  //Chose message you want to send
-  msg.ChoseMessage(&measurement, all /* water, humidity, temperature, motion*/);
+  //Chose message you want to send (send the message by writing true)
+  data.has_motion = true;
+  data.has_water = false;
+  data.has_temperature_celcius = true;
+  data.has_temperature_fahrenheit = true;
+  data.has_humidity = true;
 }
 
 void loop()
 {
   float humidity = 232;
-  uint32_t motion = digitalRead(2) == HIGH;
+  bool motion = digitalRead(2) == HIGH;
   uint32_t water = 682 - analogRead(A0);
-  uint32_t temperature = 345 - analogRead(A0);
+  float temperature_celcius = 345 - analogRead(A0);
+  float temperature_fahrenheit = 345 - analogRead(A0);
+  byte *buffer;
+  size_t size;
 
-  measurement.motion = motion;
-  measurement.water = water;
-  measurement.temperature = temperature;
-  measurement.humidity = humidity;
+  data.motion = motion;
+  data.water = water;
+  data.temperature_celcius = temperature_celcius;
+  data.temperature_fahrenheit = temperature_fahrenheit;
+  data.humidity = humidity;
 
-  msg.showValues(measurement);
-
-  msg.encodeMessage(measurement);
-
-  msg.sendMessage();
+  msg.showValues(data);
+  msg.encodeSensorData(&data, &buffer, &size);
+  ttn.sendBytes(buffer, size);
 
   delay(10000);
 }
 
-void message(const byte* payload, int length, int port, bool confirm) {
-  if (ttn.sendBytes(payload, length, port, confirm) == 2) {
-    Serial.println("-- MESSAGE");
-    Serial.print("Received " + String(length) + " bytes on port " + String(port) + ":");
-
-    for (int i = 0; i < length; i++) {
-      Serial.print(" " + String(payload[i]));
-    }
-    Serial.println();
-    msg.ProcessMessage(payload, length, port);
-    Serial.println();
+void message(const byte* payload, int length, int port) {
+  debugSerial.println("-- MESSAGE");
+  debugSerial.print("Received ");
+  debugSerial.print(String(length));
+  debugSerial.print(" bytes on port ");
+  debugSerial.print(String(port));
+  debugSerial.print(":");
+  for (int i = 0; i < length; i++) {
+    debugSerial.print(" ");
+    debugSerial.print(String(payload[i]));
   }
+  debugSerial.println();
+  msg.processMessage(payload, length, port);
+  debugSerial.println();
 }
