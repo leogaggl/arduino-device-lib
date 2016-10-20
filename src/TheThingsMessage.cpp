@@ -37,7 +37,7 @@ void TheThingsMessage::processMessage(const byte *buffer, int size, int port) {
 }
 
 void TheThingsMessage::showValues(sensorData measurement) {
-if (measurement.has_water) {
+  if (measurement.has_water) {
     uint32_t Water = measurement.water;
     debugPrint(F("water = "));
     debugPrint(Water);
