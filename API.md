@@ -138,11 +138,11 @@ TheThingsMessage msg(Stream& modemStream, Stream& debugStream);
 - `Stream& modemStream`: Stream for the LoRa modem (for The Things Node/Uno use `Serial1` and data rate `57600`).
 - `Stream& debugStream`: Stream to write debug logs to (for The Things Node/Uno use `Serial` and data rate `9600`).
 
-## Method: ProcessMessage
+## Method: processMessage
 Decode the message received.
 
 ```c
-void ProcessMessage(const byte *buffer, size_t size, int port);
+void processMessage(const byte *buffer, size_t size, int port);
 ```
 
 - `const byte *buffer`: Bytes received.
