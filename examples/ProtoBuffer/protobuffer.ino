@@ -48,17 +48,6 @@ void loop() {
   byte *buffer;
   size_t size;
 
-  debugSerial.print("Motion : ");
-  debugSerial.print(motion);
-  debugSerial.print("; Humidity : ");
-  debugSerial.print(humidity);
-  debugSerial.print("; Water : ");
-  debugSerial.print(water);
-  debugSerial.print("; Temperature celcius : ");
-  debugSerial.print(temperature_celcius);
-  debugSerial.print("; Temperature farhenheit : ");
-  debugSerial.println(temperature_fahrenheit);
-
   data.motion = motion;
   data.water = water;
   data.temperature_celcius = temperature_celcius;

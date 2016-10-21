@@ -12,7 +12,7 @@ typedef api_Measurement sensorData;
 class TheThingsMessage
 {
   public:
-     static void encodeSensorData(sensorData *measurement, byte **buffer, size_t *size);
+    static void encodeSensorData(api_Measurement *measurement, byte **buffer, size_t *size);
 };
 
 #endif
