@@ -25,8 +25,6 @@ sendBytes               KEYWORD2
 poll                    KEYWORD2
 
 encodeSensorData        KEYWORD2
-processMessage          KEYWORD2
-showValues              KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

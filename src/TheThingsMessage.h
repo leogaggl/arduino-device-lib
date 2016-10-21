@@ -11,15 +11,8 @@ typedef api_Measurement sensorData;
 
 class TheThingsMessage
 {
-  private:
-    Stream* debugStream;
-    Stream* modemStream;
-
   public:
-    TheThingsMessage(Stream& modemStream, Stream& debugStream);
-    void processMessage(const byte *buffer, int size, int port);
-    void encodeSensorData(sensorData *measurement, byte **buffer, size_t *size);
-    void showValues(sensorData measurement);
+     static void encodeSensorData(sensorData *measurement, byte **buffer, size_t *size);
 };
 
 #endif

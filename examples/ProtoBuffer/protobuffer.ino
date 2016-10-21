@@ -9,8 +9,7 @@ const byte appKey[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 #define loraSerial Serial1
 #define debugSerial Serial
 
-TheThingsNetwork ttn(loraSerial, debugSerial, TTN_FP_EU868);
-TheThingsMessage msg(loraSerial, debugSerial);
+TheThingsNetwork ttn(loraSerial, debugSerial, /* TTN_FP_EU868 or TTN_FP_US915 */);
 
 sensorData data = api_Measurement_init_default;
 
@@ -41,8 +40,9 @@ void setup()
   data.has_humidity = true;
 }
 
-void loop()
-{
+void loop() {
+  debugSerial.println("-- LOOP");
+
   float humidity = 232;
   bool motion = digitalRead(2) == HIGH;
   uint32_t water = 682 - analogRead(A0);
@@ -51,31 +51,28 @@ void loop()
   byte *buffer;
   size_t size;
 
+  debugSerial.print("Motion : ");
+  debugSerial.print(motion);
+  debugSerial.print("; Humidity : ");
+  debugSerial.print(humidity);
+  debugSerial.print("; Water : ");
+  debugSerial.print(water);
+  debugSerial.print("; Temperature celcius : ");
+  debugSerial.print(temperature_celcius);
+  debugSerial.print("; Temperature farhenheit : ");
+  debugSerial.println(temperature_fahrenheit);
+
   data.motion = motion;
   data.water = water;
   data.temperature_celcius = temperature_celcius;
   data.temperature_fahrenheit = temperature_fahrenheit;
   data.humidity = humidity;
 
-  msg.showValues(data);
-  msg.encodeSensorData(&data, &buffer, &size);
+  //Encode the message
+  TheThingsMessage::encodeSensorData(&data, &buffer, &size);
+
+  //Send the message
   ttn.sendBytes(buffer, size);
 
   delay(10000);
-}
-
-void message(const byte* payload, int length, int port) {
-  debugSerial.println("-- MESSAGE");
-  debugSerial.print("Received ");
-  debugSerial.print(String(length));
-  debugSerial.print(" bytes on port ");
-  debugSerial.print(String(port));
-  debugSerial.print(":");
-  for (int i = 0; i < length; i++) {
-    debugSerial.print(" ");
-    debugSerial.print(String(payload[i]));
-  }
-  debugSerial.println();
-  msg.processMessage(payload, length, port);
-  debugSerial.println();
 }

@@ -127,30 +127,8 @@ bool provision(const byte appEui[8], const appKey[16]);
 - `const byte appEui[8]`: Application Identifier for the device.
 - `const byte appKey[16]`: Application Key assigned to the device.
 
-## Class: TheThingsMessage
-
-```c
-#include <TheThingsMessage.h>
-
-TheThingsMessage msg(Stream& modemStream, Stream& debugStream);
-```
-
-- `Stream& modemStream`: Stream for the LoRa modem (for The Things Node/Uno use `Serial1` and data rate `57600`).
-- `Stream& debugStream`: Stream to write debug logs to (for The Things Node/Uno use `Serial` and data rate `9600`).
-
-## Method: processMessage
-Decode the message received.
-
-```c
-void processMessage(const byte *buffer, size_t size, int port);
-```
-
-- `const byte *buffer`: Bytes received.
-- `size_t size`: The number of bytes.
-- `int port`: The port to address.
-
 ## Method: encodeSensorData
-Encode the message to send.
+Encode the message you want to send.
 
 ```c
 void encodeSensorData(sensorData *data, const byte *buffer, size_t size);
