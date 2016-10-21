@@ -9,8 +9,6 @@ This is an [Arduino Library](https://www.arduino.cc/en/Guide/Libraries) for Ardu
 * Install the library by [Using the Library Manager](https://www.arduino.cc/en/Guide/Libraries#toc3)
 * **OR** by [Importing the .zip library](https://www.arduino.cc/en/Guide/Libraries#toc4) using either the [master](https://github.com/TheThingsNetwork/arduino-device-lib/archive/master.zip) or one of the [releases](https://github.com/TheThingsNetwork/arduino-device-lib/releases) ZIP files.
 
-To use built-in messages in the Arduino library, you might want to [download](http://koti.kapsi.fi/%7Ejpa/nanopb/download/) the [Nanopb compiler](https://koti.kapsi.fi/jpa/nanopb/).
-
 ## Documentation
 
 * [The Things Network Documentation / Arduino](https://www.thethingsnetwork.org/docs/arduino/)
