@@ -23,9 +23,6 @@ void setup()
   // Wait a maximum of 10s for Serial Monitor
   while (!debugSerial && millis() < 10000);
 
-  //Set callback for incoming message
-  ttn.onMessage(message);
-
   debugSerial.println("-- STATUS");
   ttn.showStatus();
 
